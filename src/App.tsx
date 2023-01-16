@@ -8,7 +8,7 @@ function App() {
   const parallelDistance = 4;
 
   const evapWd = 9;
-  const scale = 3;
+  const [scale, setScale] = useState(2);
 
   const xyScale = size / (size * scale);
 
@@ -18,7 +18,7 @@ function App() {
   const [evapRowDp, setEvapRowDp] = useState(0.5);
 
   const pct = (num: number) =>
-    `${parseFloat(((num / (size)) * 100).toFixed(2))}%`;
+    `${parseFloat(((num / size) * 100).toFixed(2))}%`;
 
   const forkGap = distance * 2 - parallelDistance * 2;
   const forkWallGap = size / 2 - distance - parallelDistance;
@@ -69,10 +69,13 @@ function App() {
       />
     </>
   );
-  const svgRef = useRef<SVGSVGElement>(null);
   return (
     <div className={styles.container}>
-      <svg viewBox={`0 0 ${size * scale} ${size * scale}`} ref={svgRef}>
+      <svg
+        viewBox={`0 0 ${size * scale} ${size * scale}`}
+        height={size * scale}
+        width={size * scale}
+      >
         <rect
           x={0}
           y={0}
@@ -82,11 +85,11 @@ function App() {
           stroke="black"
         />
         <g
-          transform={`rotate(90 ${size/xyScale/2} ${size/xyScale/2})`}
+          transform={`rotate(90 ${size / xyScale / 2} ${size / xyScale / 2})`}
           // transform-origin={`${(svgRef.current?.clientHeight || 0)/2} ${(svgRef.current?.clientHeight || 0)/2}`}
         >
           {lines}
-
+          {/* evaporators */}
           <rect
             x={pct(size / 2 - (evapRowDp * evapRows) / 2)}
             y={0}
@@ -104,7 +107,7 @@ function App() {
         </g>
         <g>
           {lines}
-
+          {/* condensers */}
           <rect
             x={pct(size / 2 - distance + parallelDistance)}
             y={0}
@@ -120,8 +123,27 @@ function App() {
             fill="blue"
           />
         </g>
+
+        <rect
+          x={pct((size - forkGap) / 2)}
+          y={pct((size - forkGap) / 2)}
+          height={pct(forkGap)}
+          width={pct(forkGap)}
+          fill="purple"
+        />
       </svg>
       <div className={styles.flexColumn}>
+        <div className={styles.flexRow}>
+          <span>Scale:</span>
+          <input
+            type="range"
+            min={1}
+            max={7}
+            step={0.5}
+            value={parseFloat(scale.toFixed(2))}
+            onChange={(e) => setScale(Number(e.target.value))}
+          />
+        </div>
         <b>Distance between centerlines of parallel fork tubes</b>
         <div className={styles.flexRow}>
           <label>Tube on-center (in):</label>
@@ -153,7 +175,7 @@ function App() {
           <span>{evapWd}</span>
         </div>
         <div className={styles.flexRow}>
-          <span>Area (in):</span>
+          <span>Area (in^2):</span>
           <span>{parseFloat((forkWallGap * evapWd).toFixed(2))}</span>
         </div>
         <div className={styles.flexRow}>
@@ -180,7 +202,6 @@ function App() {
         <b>Condensers (blue):</b>
         <div className={styles.flexRow}>
           <span>Length (in):</span>
-
           <input
             type="number"
             min={5}
@@ -206,8 +227,26 @@ function App() {
           />
         </div>
         <div className={styles.flexRow}>
-          <span>Area (in):</span>
+          <span>Area (in^2):</span>
           <span>{parseFloat((forkGap * forkWallGap).toFixed(2))}</span>
+        </div>
+        <b>Center Gap (purple):</b>
+        <div className={styles.flexRow}>
+          <span>Square (in):</span>
+          <input
+            type="number"
+            min={5}
+            max={35}
+            step={0.125}
+            value={parseFloat(forkGap.toFixed(2))}
+            onChange={(e) =>
+              setDistance((Number(e.target.value) + 2 * parallelDistance) / 2)
+            }
+          />
+        </div>
+        <div className={styles.flexRow}>
+          <span>Area (in^2):</span>
+          <span>{parseFloat((forkGap * forkGap).toFixed(2))}</span>
         </div>
       </div>
     </div>
