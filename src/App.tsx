@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from "./style.module.css";
 
 function App() {
@@ -10,13 +10,15 @@ function App() {
   const evapWd = 9;
   const scale = 3;
 
+  const xyScale = size / (size * scale);
+
   // Distance between centerlines of parallel fork tubes
   const [distance, setDistance] = useState(20);
   const [evapRows, setEvapRows] = useState(20);
   const [evapRowDp, setEvapRowDp] = useState(0.5);
 
   const pct = (num: number) =>
-    `${parseFloat(((num / size) * 100).toFixed(2))}%`;
+    `${parseFloat(((num / (size)) * 100).toFixed(2))}%`;
 
   const forkGap = distance * 2 - parallelDistance * 2;
   const forkWallGap = size / 2 - distance - parallelDistance;
@@ -67,10 +69,10 @@ function App() {
       />
     </>
   );
-
+  const svgRef = useRef<SVGSVGElement>(null);
   return (
     <div className={styles.container}>
-      <svg width={size * scale} height={size * scale}>
+      <svg viewBox={`0 0 ${size * scale} ${size * scale}`} ref={svgRef}>
         <rect
           x={0}
           y={0}
@@ -79,7 +81,10 @@ function App() {
           fill="none"
           stroke="black"
         />
-        <g transform={`rotate(90,${scale * (size / 2)},${scale * (size / 2)})`}>
+        <g
+          transform={`rotate(90 ${size/xyScale/2} ${size/xyScale/2})`}
+          // transform-origin={`${(svgRef.current?.clientHeight || 0)/2} ${(svgRef.current?.clientHeight || 0)/2}`}
+        >
           {lines}
 
           <rect
