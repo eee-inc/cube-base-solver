@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/cube-base-solver/static/css/main.ed511c85.css",
-    "main.js": "/cube-base-solver/static/js/main.dfef1a7a.js",
+    "main.js": "/cube-base-solver/static/js/main.0b15e19b.js",
     "static/js/787.ab09c8df.chunk.js": "/cube-base-solver/static/js/787.ab09c8df.chunk.js",
     "index.html": "/cube-base-solver/index.html",
     "main.ed511c85.css.map": "/cube-base-solver/static/css/main.ed511c85.css.map",
-    "main.dfef1a7a.js.map": "/cube-base-solver/static/js/main.dfef1a7a.js.map",
+    "main.0b15e19b.js.map": "/cube-base-solver/static/js/main.0b15e19b.js.map",
     "787.ab09c8df.chunk.js.map": "/cube-base-solver/static/js/787.ab09c8df.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ed511c85.css",
-    "static/js/main.dfef1a7a.js"
+    "static/js/main.0b15e19b.js"
   ]
 }
